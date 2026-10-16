@@ -1,0 +1,24 @@
+# Normalize line endings: store LF in the repo and check out LF on every OS
+# (Windows and macOS), regardless of each machine's core.autocrlf setting.
+* text=auto eol=lf
+
+# PowerShell and Windows scripts: always CRLF on every OS
+*.ps1    text eol=crlf
+*.psm1   text eol=crlf
+*.psd1   text eol=crlf
+*.ps1xml text eol=crlf
+*.pssc   text eol=crlf
+*.psrc   text eol=crlf
+*.bat    text eol=crlf
+*.cmd    text eol=crlf
+
+# Binary files: never touch
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary
+*.zip  binary
+*.woff binary
+*.woff2 binary
