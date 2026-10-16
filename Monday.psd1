@@ -11,6 +11,7 @@
     PowerShellVersion = '7.0'
 
     FunctionsToExport = @(
+        'Get-MyId'
         'Get-MondayUsers'
         'Get-MondayBoards'
         'Add-MondayUsersToBoard'

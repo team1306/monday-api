@@ -100,7 +100,8 @@ name, and value. Add `-ErrorAction Stop` to make errors stop the script.
 
 | Command | What it does |
 |---|---|
-| `Get-MondayUsers -Token` | Returns up to 1000 users with `id`, `name`, `email`, `created_at`, and `kind` (`member`, `admin`, `guest`, or `view_only`). |
+| `Get-MyId -Token` | Returns the user id of the token's owner. |
+| `Get-MondayUsers -Token` | Returns up to 1000 users with `id`, `name`, `email`, `created_at`, and `kind` (`member`, `admin`, `guest`, or `view_only`). Personal agents (`personal_agent_member`) are excluded unless `-Agents` is set. |
 | `Get-MondayBoards -Token` | Returns active, non-private boards (sub-item boards and documents excluded) from the first 50 boards, with `id`, `name`, `type`, `state`, `board_kind`, `owners`, and `subscribers`. |
 | `Add-MondayUsersToBoard -Board -UserIds -Kind -Token` | Adds users to a board as `subscriber` or `owner`. `-Board` is a board object from `Get-MondayBoards`. Does nothing if `-UserIds` is empty. |
 

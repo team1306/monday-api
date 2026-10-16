@@ -1,19 +1,46 @@
 <#
 .SYNOPSIS
-    Gets the users in the monday.com account
+    Gets the user id of the token's owner
 .DESCRIPTION
-    Returns up to 1000 users with their id, name, email, created_at, and kind
-    (member, admin, guest, or view_only).
+    Runs the query { me { id } } and returns just the id of the user the API token
+    belongs to.
 .PARAMETER Token
     monday.com API token
 .EXAMPLE
+    $myId = Get-MyId -Token $token
+#>
+function Get-MyId() {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string] $Token)
+
+    $me = Invoke-MondayApi -Query 'query { me { id } }' -Token $Token
+    return $me.me.id
+}
+
+<#
+.SYNOPSIS
+    Gets the users in the monday.com account
+.DESCRIPTION
+    Returns up to 1000 users with their id, name, email, created_at, and kind
+    (member, admin, guest, or view_only). Personal agents (kind
+    personal_agent_member) are excluded unless -Agents is set.
+.PARAMETER Token
+    monday.com API token
+.PARAMETER Agents
+    Include personal agent users
+.EXAMPLE
     Get-MondayUsers -Token $token | Where-Object kind -eq 'admin'
+.EXAMPLE
+    Get-MondayUsers -Token $token -Agents
 #>
 function Get-MondayUsers() {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [string] $Token)
+        [string] $Token,
+        [switch] $Agents)
 
     $query = @"
 query {
@@ -28,6 +55,9 @@ query {
 "@
 
     $users = Invoke-MondayApi -Query $query -Token $Token
+    if (!$Agents.IsPresent) {
+        return $users.users | Where-Object kind -ne 'personal_agent_member'
+    }
     return $users.users
 }
 
@@ -99,7 +129,7 @@ function Add-MondayUsersToBoard() {
         $Token)
 
     if ($UserIds.Count -eq 0) {
-        Write-Information "All users assigned to board $($Board.name)" -InformationAction Continue
+        Write-Information "All $($Kind) users assigned to board $($Board.name)" -InformationAction Continue
         return
     }
 
